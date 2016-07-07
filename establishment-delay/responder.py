@@ -1,14 +1,14 @@
 import socket
 from threading import Thread
 
-class Responder:
+class responder:
 
     def _listen(self):
         while True:
             try:
-                revcData, (remoteHost, remotePort) = self._sock.recvfrom(1024)
-                self._sock.sendto(revcData, (remoteHost, 2222))
-                print revcData
+                revc_data, (remote_host, remote_port) = self._sock.recvfrom(1024)
+                self._sock.sendto(revc_data, (remote_host, 2222))
+                print revc_data
             except BaseException, e:
                 break
 
@@ -22,7 +22,7 @@ class Responder:
     def stop(self):
         self._sock.close()
 
-r = Responder()
+r = responder()
 while True:
     words = str(raw_input())
     if words == 'END':
