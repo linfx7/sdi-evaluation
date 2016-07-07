@@ -29,7 +29,7 @@ class Initiator:
 
         s.join()
         c.join()
+        print round(abs(i.end - i.start), 2)
 
 
 i = Initiator()
-print round(abs(i.end - i.start), 2)
