@@ -7,10 +7,10 @@ class initiator:
     def _sendMsg(self):
         self.start = time.time()
         while self._running:
-            self._client_sock.sendto(str(time.time()), ('219.224.168.138', 2121))
+            self._client_sock.sendto(str(time.time()), ('10.2.0.10', 2121))
 
     def _recvMsg(self):
-        revc_data = self._server_sock.recvfrom(1024)
+        revc_data, remote = self._server_sock.recvfrom(1024)
         self._running = False
         self.end = float(revc_data)
 
@@ -29,7 +29,10 @@ class initiator:
 
         s.join()
         c.join()
-        print round(abs(i.end - i.start), 2)
+
+        self._server_sock.close()
+        self._client_sock.close()
 
 
 i = initiator()
+print round(abs(i.end - i.start), 2)

@@ -1,4 +1,4 @@
-import socket
+import socket, time
 from threading import Thread
 
 class responder:
@@ -9,6 +9,7 @@ class responder:
                 revc_data, (remote_host, remote_port) = self._sock.recvfrom(1024)
                 self._sock.sendto(revc_data, (remote_host, 2222))
                 print revc_data
+                time.sleep(1)
             except BaseException, e:
                 break
 
