@@ -14,26 +14,30 @@ class packet_report_builder:
         msg = bytearray((0x80, 0x00,
             0x00, 0x00, 0x00, 0x00,
             0x40, 0x80))
-        self._sock.sendall(msg + src + dst)
+        self._sock.send(msg + src + dst)
+        rtn_msg = str(self._sock.recv(100))
+        return rtn_msg
 
     def close(self):
         self._sock.close()
 
 
-def request_thread(i):
-    for x in range(10*i, 10*i+10):
+def request_thread(i, j):
+    for x in range(j*i, j*i+j):
         src = bytearray((10, 1, x, 1))
-        for y in range(100):
-            prb = packet_report_builder('127.0.0.1', 1919)
+        for y in range(10):
+            prb = packet_report_builder('219.224.168.140', 1919)
             dst = bytearray((10, 2, y, 1))
-            prb.send(src, dst)
+            rtn = prb.send(src, dst)
+            if bytearray(rtn)[2] != 0x80:
+                print "Request not accepted!"
             prb.close()
 
 start = time.time()
 tl = []
 
-for i in range(5):
-    t = threading.Thread(target=request_thread, args=(i,))
+for i in range(20):
+    t = threading.Thread(target=request_thread, args=(i,10))
     tl.append(t)
 
 for t in tl:
